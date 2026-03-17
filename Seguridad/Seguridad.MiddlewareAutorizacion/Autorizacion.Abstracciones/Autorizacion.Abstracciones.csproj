@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Version>1.0.0</Version>
-    <PackageId>Autorizacion.Abstracciones.rcarballo</PackageId>
+    <PackageId>Autorizacion.Abstracciones.rcarballo08</PackageId>
     <Authors>rcarballo08</Authors>
     <Description>Interfaces y modelos compartidos del paquete de autorización por claims para ASP.NET Core 8</Description>
     <RepositoryUrl>https://github.com/Drojascode/SC701</RepositoryUrl>
