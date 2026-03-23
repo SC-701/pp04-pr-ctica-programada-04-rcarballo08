@@ -55,7 +55,7 @@ jobs:
 
       - name: Publicar (dotnet publish)
         run: |
-          cd "dotnet restore "Reglas/Reglas.csproj""
+          cd "Seguridad/Seguridad.API/API""
           dotnet publish "API/API.csproj" \
             --configuration Release \
             --no-build \
