@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autorizacion.Abstracciones.rcarballo08" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.DA.rcarballo08" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.Flujo.rcarballo08" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.Middleware.rcarballo08" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Abstracciones\Abstracciones.csproj" />
     <ProjectReference Include="..\Reglas\Reglas.csproj" />
   </ItemGroup>

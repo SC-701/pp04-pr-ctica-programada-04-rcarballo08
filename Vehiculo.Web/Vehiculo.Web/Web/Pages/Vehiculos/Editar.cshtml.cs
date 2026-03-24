@@ -1,5 +1,6 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Web.Pages.Vehiculos
 {
+    [Authorize]
     public class EditarModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -38,7 +40,7 @@ namespace Web.Pages.Vehiculos
             Console.WriteLine($"URL completa: {endpoint}");
             System.Diagnostics.Debug.WriteLine($"URL completa: {endpoint}");
 
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -69,7 +71,7 @@ namespace Web.Pages.Vehiculos
             if (!ModelState.IsValid)
                 return Page();
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoints", "EditarVehiculo");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var respuesta = await cliente.PutAsJsonAsync<VehiculoRequest>(string.Format(endpoint, vehiculoResponse.Id), new VehiculoRequest
             {
                 Placa= vehiculoResponse.Placa,
@@ -91,7 +93,7 @@ namespace Web.Pages.Vehiculos
             Console.WriteLine($"URL completa: {endpoint}");
             System.Diagnostics.Debug.WriteLine($"URL completa: {endpoint}");
 
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -114,7 +116,7 @@ namespace Web.Pages.Vehiculos
             Console.WriteLine($"URL completa: {endpoint}");
             System.Diagnostics.Debug.WriteLine($"URL completa: {endpoint}");
 
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, marcaId));
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -132,5 +134,18 @@ namespace Web.Pages.Vehiculos
             var modelos = await ObtenerModelos(marcaId);
             return new JsonResult(modelos);
         }
+
+        private HttpClient ObtenerClienteConToken()
+        {
+            var tokenClaim = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "Token");
+            var cliente = ObtenerClienteConToken();
+            if (tokenClaim != null)
+                cliente.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue(
+                        "Bearer", tokenClaim.Value);
+            return cliente;
+        }
     }
 }
+
